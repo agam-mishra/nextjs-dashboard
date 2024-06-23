@@ -6,13 +6,20 @@ import {
 	KeyIcon,
 	ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import { ArrowRightIcon, SparklesIcon } from '@heroicons/react/20/solid';
 import { Button } from '@/app/ui/button';
 import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/app/lib/actions';
+import Tooltip from '@mui/material/Tooltip';
+import { useState } from 'react';
 
 export default function LoginForm() {
 	const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+	const [credentials, setShowCredentials] = useState(false)
+
+	const showCredentials = () => {
+		setShowCredentials(!credentials)
+	};
 
 	return (
 		<form action={dispatch} className="space-y-3">
@@ -62,6 +69,23 @@ export default function LoginForm() {
 					</div>
 				</div>
 				<LoginButton />
+				<div className="mt-5 flex row gap-2 justify-center">
+					<Tooltip title="Hint" placement="left" onClick={showCredentials}>
+						<SparklesIcon className="h-5 w-5 text-blue-500" />
+					</Tooltip>
+				</div>
+				{credentials && (
+					<>
+						<p className="text-sm text-gray-500">
+							<span className='font-bold'>Email: </span>
+							<span>user@nextmail.com</span>
+						</p>
+						<p className="text-sm text-gray-500">
+							<span className='font-bold'>Password: </span>
+							<span>123456</span>
+						</p>
+					</>
+				)}
 				<div
 					className="flex h-8 items-end space-x-1"
 					aria-live="polite"
